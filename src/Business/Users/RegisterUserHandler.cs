@@ -1,9 +1,9 @@
 ﻿using Business.Abstractions.Authentication;
 using Business.Abstractions.Repositories;
-using Domain.User;
+using Domain.Users;
 using MediatR;
 
-namespace Business
+namespace Business.Users
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Guid>
     {

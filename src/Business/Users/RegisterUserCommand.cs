@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Business
+namespace Business.Users
 {
     public record RegisterUserCommand(string Email, string Password) : IRequest<Guid>;
 }
