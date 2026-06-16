@@ -1,17 +1,20 @@
 ﻿using Business.Abstractions.Authentication;
+using Business.Abstractions.Persistence;
 using Business.Abstractions.Repositories;
 using Domain.Users;
 using MediatR;
 
-namespace Business.Users
+namespace Business.Users.Commands.RegisterUser
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Guid>
     {
+        private readonly IUnitOfWork unitOfWork;
         private readonly IUserRepository userRepository;
         private readonly IPasswordHasher passwordHasher;
 
-        public RegisterUserHandler(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public RegisterUserHandler(IUnitOfWork unitOfWork, IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
+            this.unitOfWork = unitOfWork;
             this.userRepository = userRepository;
             this.passwordHasher = passwordHasher;
         }
@@ -28,7 +31,8 @@ namespace Business.Users
             var user = new User(request.Email, hash);
             
             await userRepository.AddAsync(user);
-            
+            await unitOfWork.SaveChangesAsync(cancellationToken);
+
             return user.Id;
         }
     }

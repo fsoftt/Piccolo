@@ -1,18 +1,11 @@
-using Business.Abstractions.Authentication;
-using Business.Abstractions.Repositories;
-using Infrastructure.Authentication;
-using Infrastructure.Persistence;
-using Infrastructure.Persistence.Repositories;
-using Microsoft.EntityFrameworkCore;
+using Business;
+using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddBusiness();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
