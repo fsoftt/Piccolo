@@ -1,4 +1,5 @@
 ﻿using API.Contracts.Authentication;
+using API.Extensions;
 using Azure.Core;
 using Business.Common;
 using Business.Users.Commands.LoginUser;
@@ -27,13 +28,10 @@ namespace API.Controllers
             Result<Guid> result = await sender.Send(command);
             if (result.IsFailure)
             {
-                return BadRequest(result.Error);
+                return result.ToProblem(this);
             }
 
-            return Ok(new
-            {
-                UserId = result.Value
-            });
+            return Ok(new RegisterResponse(result.Value));
         }
 
         [HttpPost("login")]
@@ -44,13 +42,10 @@ namespace API.Controllers
             Result<string> result = await sender.Send(command);
             if (result.IsFailure)
             {
-                return Unauthorized(result.Error);
+                return result.ToProblem(this);
             }
 
-            return Ok(new
-            {
-                AccessToken = result.Value
-            });
+            return Ok(new LoginResponse(result.Value!));
         }
     }
 }
