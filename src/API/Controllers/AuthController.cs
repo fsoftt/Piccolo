@@ -1,5 +1,6 @@
 ﻿using API.Contracts.Authentication;
 using Azure.Core;
+using Business.Common;
 using Business.Users.Commands.LoginUser;
 using Business.Users.Commands.RegisterUser;
 using MediatR;
@@ -23,11 +24,15 @@ namespace API.Controllers
         {
             var command = new RegisterUserCommand(request.Email, request.Password);
 
-            Guid userId = await sender.Send(command);
+            Result<Guid> result = await sender.Send(command);
+            if (result.IsFailure)
+            {
+                return BadRequest(result.Error);
+            }
 
             return Ok(new
             {
-                UserId = userId
+                UserId = result.Value
             });
         }
 
@@ -36,11 +41,15 @@ namespace API.Controllers
         {
             var command = new LoginUserCommand(request.Email, request.Password);
 
-            string token = await sender.Send(command);
+            Result<string> result = await sender.Send(command);
+            if (result.IsFailure)
+            {
+                return Unauthorized(result.Error);
+            }
 
             return Ok(new
             {
-                AccessToken = token
+                AccessToken = result.Value
             });
         }
     }

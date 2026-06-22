@@ -1,12 +1,14 @@
 ﻿using Business.Abstractions.Authentication;
 using Business.Abstractions.Persistence;
 using Business.Abstractions.Repositories;
+using Business.Common;
+using Business.Common.Errors;
 using Domain.Users;
 using MediatR;
 
 namespace Business.Users.Commands.RegisterUser
 {
-    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Guid>
+    public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<Guid>>
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IUserRepository userRepository;
@@ -19,12 +21,12 @@ namespace Business.Users.Commands.RegisterUser
             this.passwordHasher = passwordHasher;
         }
 
-        public async Task<Guid> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Guid>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             bool exists = await userRepository.ExistsByEmailAsync(request.Email);
             if (exists)
             {
-                throw new InvalidOperationException("A user with this email already exists.");
+                return Result<Guid>.Failure(UserErrors.EmailAlreadyExists);
             }
 
             string hash = passwordHasher.Hash(request.Password);
@@ -33,7 +35,7 @@ namespace Business.Users.Commands.RegisterUser
             await userRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return user.Id;
+            return Result<Guid>.Success(user.Id);
         }
     }
 }

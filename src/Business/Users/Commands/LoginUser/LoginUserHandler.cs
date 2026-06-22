@@ -1,12 +1,14 @@
 ﻿using Business.Abstractions.Authentication;
 using Business.Abstractions.Repositories;
+using Business.Common;
+using Business.Common.Errors;
 using Domain.Users;
 using MediatR;
 
 namespace Business.Users.Commands.LoginUser
 {
     public class LoginUserHandler
-        : IRequestHandler<LoginUserCommand, string>
+        : IRequestHandler<LoginUserCommand, Result<string>>
     {
         private readonly IUserRepository users;
         private readonly IPasswordHasher hasher;
@@ -22,23 +24,25 @@ namespace Business.Users.Commands.LoginUser
             this.jwtProvider = jwtProvider;
         }
 
-        public async Task<string> Handle(
+        public async Task<Result<string>> Handle(
             LoginUserCommand request, 
             CancellationToken cancellationToken)
         {
             User? user = await users.GetByEmailAsync(request.Email);
             if (user is null)
             {
-                throw new Exception("Invalid email or password.");
+                return Result<string>.Failure(UserErrors.InvalidCredentials);
             }
 
             bool valid = hasher.Verify(request.Password, user.PasswordHash!);
             if (!valid)
             {
-                throw new Exception("Invalid email or password.");
+                return Result<string>.Failure(UserErrors.InvalidCredentials);
             }
 
-            return jwtProvider.Generate(user);
+            string token = jwtProvider.Generate(user);
+
+            return Result<string>.Success(token);
         }
     }
 }
