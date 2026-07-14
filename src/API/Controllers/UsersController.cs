@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using API.Extensions;
+using Business.Common;
+using Business.Users.Queries.GetCurrentUser;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -8,15 +11,24 @@ namespace API.Controllers
     [Route("api/users")]
     public class UsersController : ControllerBase
     {
+        private readonly ISender sender;
+
+        public UsersController(ISender sender)
+        {
+            this.sender = sender;
+        }
+
         [Authorize]
         [HttpGet("me")]
-        public IActionResult Me()
+        public async Task<IActionResult> Me()
         {
-            return Ok(new
+            Result<GetCurrentUserResponse> result = await sender.Send(new GetCurrentUserQuery());
+            if (result.IsFailure)
             {
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                Email = User.FindFirstValue(ClaimTypes.Email),
-            });
+                return result.ToProblem(this);
+            }
+
+            return Ok(result.Value);
         }
     }
 }

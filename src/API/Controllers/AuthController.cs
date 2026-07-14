@@ -1,6 +1,5 @@
 ﻿using API.Contracts.Authentication;
 using API.Extensions;
-using Azure.Core;
 using Business.Common;
 using Business.Users.Commands.LoginUser;
 using Business.Users.Commands.RegisterUser;
