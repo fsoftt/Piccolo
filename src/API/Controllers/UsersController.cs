@@ -1,5 +1,5 @@
 ﻿using API.Extensions;
-using Business.Common;
+using Domain.Common;
 using Business.Users.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

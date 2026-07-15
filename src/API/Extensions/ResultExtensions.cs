@@ -1,5 +1,5 @@
 ﻿using API.Common;
-using Business.Common;
+using Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Extensions

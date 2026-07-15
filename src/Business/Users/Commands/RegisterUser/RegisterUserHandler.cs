@@ -1,9 +1,9 @@
 ﻿using Business.Abstractions.Authentication;
 using Business.Abstractions.Persistence;
 using Business.Abstractions.Repositories;
-using Business.Common;
-using Business.Common.Errors;
+using Domain.Common;
 using Domain.Users;
+using Domain.Users.Errors;
 using MediatR;
 
 namespace Business.Users.Commands.RegisterUser

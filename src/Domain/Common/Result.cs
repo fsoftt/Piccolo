@@ -1,4 +1,4 @@
-﻿namespace Business.Common
+﻿namespace Domain.Common
 {
     public class Result
     {

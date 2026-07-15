@@ -1,5 +1,5 @@
 ﻿using Business.Abstractions.Authentication;
-using Business.Common;
+using Domain.Common;
 using MediatR;
 
 namespace Business.Users.Queries.GetCurrentUser
