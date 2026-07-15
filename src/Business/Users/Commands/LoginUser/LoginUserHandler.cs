@@ -3,6 +3,7 @@ using Business.Abstractions.Repositories;
 using Domain.Common;
 using Domain.Users;
 using Domain.Users.Errors;
+using Domain.Users.ValueObjects;
 using MediatR;
 
 namespace Business.Users.Commands.LoginUser
@@ -28,7 +29,14 @@ namespace Business.Users.Commands.LoginUser
             LoginUserCommand request, 
             CancellationToken cancellationToken)
         {
-            User? user = await users.GetByEmailAsync(request.Email);
+            var userEmail = Email.Create(request.Email);
+            if (userEmail.IsFailure)
+            {
+                return Result<string>.Failure(
+                    new Error("Email.InvalidFormat", "The provided email format is invalid."));
+            }
+
+            User? user = await users.GetByEmailAsync(userEmail.Value!);
             if (user is null)
             {
                 return Result<string>.Failure(UserErrors.InvalidCredentials);

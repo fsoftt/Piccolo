@@ -4,6 +4,7 @@ using Business.Abstractions.Repositories;
 using Domain.Common;
 using Domain.Users;
 using Domain.Users.Errors;
+using Domain.Users.ValueObjects;
 using MediatR;
 
 namespace Business.Users.Commands.RegisterUser
@@ -23,14 +24,28 @@ namespace Business.Users.Commands.RegisterUser
 
         public async Task<Result<Guid>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
-            bool exists = await userRepository.ExistsByEmailAsync(request.Email);
+            var userEmail = Email.Create(request.Email);
+            if (userEmail.IsFailure)
+            {
+                return Result<Guid>.Failure(
+                    new Error("Email.InvalidFormat", "The provided email format is invalid."));
+            }
+
+            bool exists = await userRepository.ExistsByEmailAsync(userEmail.Value!);
             if (exists)
             {
                 return Result<Guid>.Failure(UserErrors.EmailAlreadyExists);
             }
 
             string hash = passwordHasher.Hash(request.Password);
-            var user = new User(request.Email, hash);
+
+            Result<Email> emailResult = Email.Create(request.Email);
+            if (emailResult.IsFailure)
+            {
+                return Result<Guid>.Failure(emailResult.Error);
+            }
+
+            var user = new User(emailResult.Value!, hash);
             
             await userRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);

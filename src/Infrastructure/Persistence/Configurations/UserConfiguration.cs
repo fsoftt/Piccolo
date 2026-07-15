@@ -1,4 +1,5 @@
 ﻿using Domain.Users;
+using Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,8 +12,11 @@ namespace Infrastructure.Persistence.Configurations
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.Email)
+                .HasConversion(
+                    email => email.Value,
+                    value => Email.Create(value).Value!)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(320);
 
             builder.HasIndex(u => u.Email)
                 .IsUnique();
