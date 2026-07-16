@@ -37,7 +37,12 @@ namespace Business.Users.Commands.RegisterUser
                 return Result<Guid>.Failure(UserErrors.EmailAlreadyExists);
             }
 
-            string hash = passwordHasher.Hash(request.Password);
+            string hashedPassword = passwordHasher.Hash(request.Password);
+            Result<PasswordHash> passwordHashResult = PasswordHash.Create(hashedPassword);
+            if (passwordHashResult.IsFailure)
+            {
+                return Result<Guid>.Failure(passwordHashResult.Error);
+            }
 
             Result<Email> emailResult = Email.Create(request.Email);
             if (emailResult.IsFailure)
@@ -45,8 +50,14 @@ namespace Business.Users.Commands.RegisterUser
                 return Result<Guid>.Failure(emailResult.Error);
             }
 
-            var user = new User(emailResult.Value!, hash);
-            
+            Result<User> userResult = User.Create(emailResult.Value!, passwordHashResult.Value!);
+            if (userResult.IsFailure)
+            {
+                return Result<Guid>.Failure(userResult.Error);
+            }
+
+            var user = userResult.Value!;
+
             await userRepository.AddAsync(user);
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

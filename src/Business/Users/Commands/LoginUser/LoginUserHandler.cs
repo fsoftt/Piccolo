@@ -42,7 +42,7 @@ namespace Business.Users.Commands.LoginUser
                 return Result<string>.Failure(UserErrors.InvalidCredentials);
             }
 
-            bool valid = hasher.Verify(request.Password, user.PasswordHash!);
+            bool valid = hasher.Verify(request.Password, user.PasswordHash);
             if (!valid)
             {
                 return Result<string>.Failure(UserErrors.InvalidCredentials);

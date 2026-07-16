@@ -22,6 +22,9 @@ namespace Infrastructure.Persistence.Configurations
                 .IsUnique();
 
             builder.Property(u => u.PasswordHash)
+                .HasConversion(
+                    hash => hash.Value,
+                    value => PasswordHash.Create(value).Value!)
                 .IsRequired();
         }
     }

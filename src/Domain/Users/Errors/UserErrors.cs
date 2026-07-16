@@ -12,5 +12,9 @@ namespace Domain.Users.Errors
             new Error(
                 "Users.InvalidCredentials", 
                 "Invalid credentials");
+        public static readonly Error InvalidPasswordHash =
+            new Error(
+                "Users.InvalidPasswordHash",
+                "Invalid password hash");
     }
 }
