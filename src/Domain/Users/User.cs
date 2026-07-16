@@ -8,7 +8,9 @@ namespace Domain.Users
         public Email Email { get; private set; }
         public PasswordHash PasswordHash { get; private set; }
 
-        private User() { }
+        private User() 
+        { 
+        }
 
         private User(
             Guid id,

@@ -4,9 +4,22 @@
     {
         public Guid Id { get; protected set; }
 
-        protected Entity()
+        public override bool Equals(object? obj)
         {
-            Id = Guid.NewGuid();
+            if (obj is not Entity other)
+            {
+                return false;
+            }
+
+            if (GetType() != other.GetType())
+            {
+                return false;
+            }
+
+            return Id == other.Id;
         }
+
+        public override int GetHashCode()
+            => Id.GetHashCode();
     }
 }
