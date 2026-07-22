@@ -1,6 +1,8 @@
 ﻿namespace Domain.Instruments
 {
-    internal interface IInstrumentDefinitionRepository
+    public interface IInstrumentDefinitionRepository
     {
+        Task<IReadOnlyList<InstrumentDefinition>> ListAsync(
+            CancellationToken cancellationToken);
     }
 }

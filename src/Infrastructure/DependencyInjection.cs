@@ -2,9 +2,11 @@
 using Business.Abstractions.Repositories;
 using Business.Authentication;
 using CrossCutting.Exceptions;
+using Domain.Instruments;
 using Domain.Organizations;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Instruments;
 using Infrastructure.Persistence.Organizations;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+        services.AddScoped<IInstrumentDefinitionRepository, InstrumentDefinitionRepository>();
 
         return services;
     }
