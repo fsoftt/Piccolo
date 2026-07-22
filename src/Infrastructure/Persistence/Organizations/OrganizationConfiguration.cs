@@ -27,6 +27,15 @@ namespace Infrastructure.Persistence.Organizations
                 .WithOne()
                 .HasForeignKey(x => x.OrganizationId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder
+                .HasMany(x => x.Instruments)
+                .WithOne()
+                .HasForeignKey(x => x.OrganizationId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Navigation(x => x.Instruments)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

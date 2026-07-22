@@ -4,5 +4,9 @@
     {
         Task<IReadOnlyList<InstrumentDefinition>> ListAsync(
             CancellationToken cancellationToken);
+
+        Task<bool> ExistsAsync(
+            IEnumerable<Guid> ids,
+            CancellationToken cancellationToken);
     }
 }

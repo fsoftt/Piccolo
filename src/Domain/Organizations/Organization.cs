@@ -7,6 +7,7 @@ namespace Domain.Organizations
     public sealed class Organization : AggregateRoot
     {
         private readonly List<OrganizationMember> members = [];
+        private readonly List<OrganizationInstrument> instruments = [];
 
         private Organization()
         {
@@ -27,6 +28,9 @@ namespace Domain.Organizations
 
         public IReadOnlyCollection<OrganizationMember> Members
             => members.AsReadOnly();
+
+        public IReadOnlyCollection<OrganizationInstrument> Instruments =>
+            instruments.AsReadOnly();
 
         public static Result<Organization> Create(
             OrganizationName name,
@@ -75,6 +79,64 @@ namespace Domain.Organizations
             members.Add(member);
 
             return Result.Success();
+        }
+
+        public Result ConfigureInstruments(
+            IEnumerable<OrganizationInstrumentInfo> instruments)
+        {
+            ArgumentNullException.ThrowIfNull(instruments);
+
+            if (!instruments.Any())
+            {
+                return Result.Failure(OrganizationErrors.AtLeastOneInstrumentRequired);
+            }
+            if (HasDuplicateNames(instruments))
+            {
+                return Result.Failure(OrganizationErrors.DuplicateInstrumentName);
+            }
+
+            var requestedInstruments = instruments.ToDictionary(
+                x => x.Name.Trim(),
+                StringComparer.OrdinalIgnoreCase);
+
+            var instrumentsToRemove = this.instruments
+                .Where(x => !requestedInstruments.ContainsKey(x.Name))
+                .ToList();
+            foreach (var instrument in instrumentsToRemove)
+            {
+                this.instruments.Remove(instrument);
+            }
+
+            var existingNames = this.instruments
+                .Select(x => x.Name)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+            foreach (var instrument in instruments)
+            {
+                if (existingNames.Contains(instrument.Name))
+                {
+                    continue;
+                }
+
+                this.instruments.Add(
+                    new OrganizationInstrument(
+                        Guid.NewGuid(),
+                        Id,
+                        instrument.Name,
+                        instrument.Family,
+                        instrument.InstrumentDefinitionId));
+            }
+
+            return Result.Success();
+        }
+
+        private static bool HasDuplicateNames(
+            IEnumerable<OrganizationInstrumentInfo> instruments)
+        {
+            return instruments
+                .GroupBy(
+                    x => x.Name.Trim(),
+                    StringComparer.OrdinalIgnoreCase)
+                .Any(x => x.Count() > 1);
         }
     }
 }

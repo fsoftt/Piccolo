@@ -8,6 +8,10 @@ namespace Domain.Organizations
             Organization organization,
             CancellationToken cancellationToken);
 
+        Task<Organization?> FirstOrDefaultAsync(
+            ISpecification<Organization> specification, 
+            CancellationToken cancellationToken);
+
         Task<IReadOnlyList<Organization>> ListAsync(
             ISpecification<Organization> specification,
             CancellationToken cancellationToken);

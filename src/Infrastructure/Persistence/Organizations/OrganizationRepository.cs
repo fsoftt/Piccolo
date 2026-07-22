@@ -23,6 +23,13 @@ namespace Infrastructure.Persistence.Organizations
                 cancellationToken);
         }
 
+        public async Task<Organization?> FirstOrDefaultAsync(ISpecification<Organization> specification, CancellationToken cancellationToken)
+        {
+            return await context.Organizations
+                .WithSpecification(specification)
+                .FirstOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<IReadOnlyList<Organization>> ListAsync(
             ISpecification<Organization> specification,
             CancellationToken cancellationToken)

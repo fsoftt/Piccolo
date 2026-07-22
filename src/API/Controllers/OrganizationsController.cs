@@ -1,4 +1,6 @@
 ﻿using API.Contracts.Organizations;
+using API.Extensions;
+using Business.Organizations.ConfigureInstruments;
 using Business.Organizations.CreateOrganization;
 using Business.Organizations.GetMyOrganizations;
 using MediatR;
@@ -61,6 +63,25 @@ namespace API.Controllers
             }
 
             return Results.Ok(result.Value);
+        }
+
+        [HttpPut("{organizationId:guid}/instruments")]
+        public async Task<IActionResult> ConfigureInstruments(
+            Guid organizationId,
+            ConfigureOrganizationInstrumentsRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new ConfigureOrganizationInstrumentsCommand(
+                organizationId,
+                request.Instruments);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return result.ToProblem(this);
+            }
+
+            return NoContent();
         }
     }
 }

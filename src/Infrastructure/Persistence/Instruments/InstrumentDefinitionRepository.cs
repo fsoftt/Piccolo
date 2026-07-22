@@ -14,6 +14,13 @@ namespace Infrastructure.Persistence.Instruments
             this.context = context;
         }
 
+        public async Task<bool> ExistsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken)
+        {
+            return await context.InstrumentDefinitions
+                .AsNoTracking()
+                .AnyAsync(x => ids.Contains(x.Id), cancellationToken);
+        }
+
         public async Task<IReadOnlyList<InstrumentDefinition>> ListAsync(
             CancellationToken cancellationToken)
         {

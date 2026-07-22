@@ -25,6 +25,7 @@ namespace API.Extensions
                         result.Error.Description)),
             };
         }
+
         public static IActionResult ToProblem(this Result result, ControllerBase controller)
         {
             var statusCode = result.Error.Code switch
