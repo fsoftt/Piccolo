@@ -1,10 +1,9 @@
-﻿using Business.Abstractions.Authentication;
-using Microsoft.AspNetCore.Http;
+﻿using Business.Authentication;
 using System.Security.Claims;
 
-namespace Infrastructure.Authentication
+namespace API.Authentication
 {
-    public class CurrentUser : ICurrentUser
+    public sealed class CurrentUser : ICurrentUser
     {
         private readonly IHttpContextAccessor httpContextAccessor;
 
@@ -12,6 +11,9 @@ namespace Infrastructure.Authentication
         {
             this.httpContextAccessor = httpContextAccessor;
         }
+
+        public bool IsAuthenticated =>
+            httpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
 
         public Guid? UserId 
         {

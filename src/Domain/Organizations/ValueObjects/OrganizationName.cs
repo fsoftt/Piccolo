@@ -5,7 +5,7 @@ namespace Domain.Organizations.ValueObjects
 {
     public class OrganizationName : ValueObject
     {
-        private const int MaxLength = 150;
+        public const int MaxLength = 150;
 
         private OrganizationName(string value)
         {

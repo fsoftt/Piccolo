@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Business.Organizations.Policies;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Business
 {
@@ -7,6 +8,8 @@ namespace Business
         public static IServiceCollection AddBusiness(this IServiceCollection services)
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+
+            services.AddScoped<ICreateOrganizationPolicy, CreateOrganizationPolicy>();
 
             return services;
         }

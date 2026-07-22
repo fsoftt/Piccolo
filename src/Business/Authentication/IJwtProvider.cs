@@ -1,6 +1,6 @@
 ﻿using Domain.Users;
 
-namespace Business.Abstractions.Authentication
+namespace Business.Authentication
 {
     public interface IJwtProvider
     {

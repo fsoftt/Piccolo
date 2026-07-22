@@ -1,3 +1,4 @@
+using API;
 using Business;
 using CrossCutting.Exceptions;
 using Infrastructure;
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddBusiness();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddApi();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 builder.Services.AddControllers();

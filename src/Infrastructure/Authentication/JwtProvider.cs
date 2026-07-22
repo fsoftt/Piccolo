@@ -1,4 +1,4 @@
-﻿using Business.Abstractions.Authentication;
+﻿using Business.Authentication;
 using Domain.Users;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

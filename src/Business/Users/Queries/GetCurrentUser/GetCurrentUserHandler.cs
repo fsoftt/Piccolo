@@ -1,4 +1,4 @@
-﻿using Business.Abstractions.Authentication;
+﻿using Business.Authentication;
 using Domain.Common;
 using MediatR;
 

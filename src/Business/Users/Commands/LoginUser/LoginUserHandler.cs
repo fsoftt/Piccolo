@@ -1,5 +1,5 @@
-﻿using Business.Abstractions.Authentication;
-using Business.Abstractions.Repositories;
+﻿using Business.Abstractions.Repositories;
+using Business.Authentication;
 using Domain.Common;
 using Domain.Users;
 using Domain.Users.Errors;

@@ -1,9 +1,11 @@
-﻿using Business.Abstractions.Authentication;
-using Business.Abstractions.Persistence;
+﻿using Business.Abstractions.Persistence;
 using Business.Abstractions.Repositories;
+using Business.Authentication;
 using CrossCutting.Exceptions;
+using Domain.Organizations;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
+using Infrastructure.Persistence.Organizations;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,11 +29,11 @@ public static class DependencyInjection
             configuration.GetSection(JwtOptions.SectionName));
         
         services.AddSingleton(jwtOptions);
-        services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddScoped<IOrganizationRepository, OrganizationRepository>();
 
         return services;
     }

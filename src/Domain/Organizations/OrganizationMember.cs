@@ -4,8 +4,6 @@ namespace Domain.Organizations
 {
     public sealed class OrganizationMember : Entity
     {
-        private readonly List<OrganizationMemberPermission> permissions = [];
-
         private OrganizationMember()
         {
         }
@@ -33,14 +31,6 @@ namespace Domain.Organizations
 
         public DateTime JoinedAt { get; private set; }
 
-        public bool HasPermission(OrganizationPermission permission)
-        {
-            return permissions.Any(x => x.Permission == permission);
-        }
-
-        public IReadOnlyCollection<OrganizationMemberPermission> Permissions =>
-            permissions.AsReadOnly();
-
         internal static OrganizationMember CreateOwner(
             Guid organizationId,
             Guid userId)
@@ -49,12 +39,6 @@ namespace Domain.Organizations
                 organizationId,
                 userId,
                 OrganizationRole.Owner);
-
-            foreach (var permission in OrganizationPermissions.Owner)
-            {
-                owner.permissions.Add(
-                    OrganizationMemberPermission.Create(permission));
-            }
 
             return owner;
         }
