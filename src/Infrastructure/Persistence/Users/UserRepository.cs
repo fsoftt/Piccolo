@@ -1,9 +1,8 @@
-﻿using Business.Abstractions.Repositories;
-using Domain.Users;
+﻿using Domain.Users;
 using Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Persistence.Repositories
+namespace Infrastructure.Persistence.Users
 {
     public class UserRepository : IUserRepository
     {

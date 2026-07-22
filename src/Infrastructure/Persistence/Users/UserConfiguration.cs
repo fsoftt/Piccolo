@@ -3,7 +3,7 @@ using Domain.Users.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Infrastructure.Persistence.Authentication
+namespace Infrastructure.Persistence.Users
 {
     public class UserConfiguration : IEntityTypeConfiguration<User>
     {

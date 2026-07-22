@@ -1,14 +1,14 @@
 ﻿using Business.Abstractions.Persistence;
-using Business.Abstractions.Repositories;
 using Business.Authentication;
 using CrossCutting.Exceptions;
 using Domain.Instruments;
 using Domain.Organizations;
+using Domain.Users;
 using Infrastructure.Authentication;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Instruments;
 using Infrastructure.Persistence.Organizations;
-using Infrastructure.Persistence.Repositories;
+using Infrastructure.Persistence.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

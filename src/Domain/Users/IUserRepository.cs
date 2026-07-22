@@ -1,7 +1,6 @@
-﻿using Domain.Users;
-using Domain.Users.ValueObjects;
+﻿using Domain.Users.ValueObjects;
 
-namespace Business.Abstractions.Repositories
+namespace Domain.Users
 {
     public interface IUserRepository
     {
