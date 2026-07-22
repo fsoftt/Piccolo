@@ -1,4 +1,4 @@
-﻿using Domain.Organizations.ValueObjects;
+﻿using Ardalis.Specification;
 
 namespace Domain.Organizations
 {
@@ -6,6 +6,10 @@ namespace Domain.Organizations
     {
         Task AddAsync(
             Organization organization,
+            CancellationToken cancellationToken);
+
+        Task<IReadOnlyList<Organization>> ListAsync(
+            ISpecification<Organization> specification,
             CancellationToken cancellationToken);
     }
 }

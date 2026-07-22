@@ -1,4 +1,7 @@
-﻿using Domain.Organizations;
+﻿using Ardalis.Specification;
+using Ardalis.Specification.EntityFrameworkCore;
+using Domain.Organizations;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Organizations
 {
@@ -18,6 +21,15 @@ namespace Infrastructure.Persistence.Organizations
             await context.Organizations.AddAsync(
                 organization,
                 cancellationToken);
+        }
+
+        public async Task<IReadOnlyList<Organization>> ListAsync(
+            ISpecification<Organization> specification,
+            CancellationToken cancellationToken)
+        {
+            return await context.Organizations
+                .WithSpecification(specification)
+                .ToListAsync(cancellationToken);
         }
     }
 }

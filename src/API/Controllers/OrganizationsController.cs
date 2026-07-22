@@ -1,5 +1,6 @@
 ﻿using API.Contracts.Organizations;
 using Business.Organizations.CreateOrganization;
+using Business.Organizations.GetMyOrganizations;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,25 @@ namespace API.Controllers
             return Results.Created(
                 $"/api/organizations/{result.Value!.Id}",
                 result.Value);
+        }
+
+        [HttpGet]
+        public async Task<IResult> GetMyOrganizations(
+            CancellationToken cancellationToken)
+        {
+            var result = await sender.Send(
+                new GetMyOrganizationsQuery(),
+                cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    result.Error.Description
+                });
+            }
+
+            return Results.Ok(result.Value);
         }
     }
 }
