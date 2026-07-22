@@ -3,7 +3,9 @@ using Business;
 using CrossCutting.Exceptions;
 using Infrastructure;
 using Infrastructure.Authentication;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +43,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+await Seed(app);
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -56,3 +60,19 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static async Task Seed(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider
+            .GetRequiredService<ApplicationDbContext>();
+
+        await dbContext.Database.MigrateAsync();
+
+        var seeder = scope.ServiceProvider
+            .GetRequiredService<DatabaseSeeder>();
+
+        await seeder.SeedAsync();
+    }
+}

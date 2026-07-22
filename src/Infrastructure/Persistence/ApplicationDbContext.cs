@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using Domain.Instruments;
 using Domain.Organizations;
 using Domain.Users;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +13,7 @@ namespace Infrastructure.Persistence
 
         public DbSet<User> Users => Set<User>();
         public DbSet<Organization> Organizations => Set<Organization>();
+        public DbSet<InstrumentDefinition> InstrumentDefinitions => Set<InstrumentDefinition>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

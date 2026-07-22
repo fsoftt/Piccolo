@@ -27,8 +27,9 @@ public static class DependencyInjection
 
         services.Configure<JwtOptions>(
             configuration.GetSection(JwtOptions.SectionName));
-        
+
         services.AddSingleton(jwtOptions);
+        services.AddScoped<DatabaseSeeder>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
