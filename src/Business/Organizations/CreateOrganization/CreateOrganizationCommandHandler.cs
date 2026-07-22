@@ -5,10 +5,12 @@ using Domain.Common;
 using Domain.Organizations;
 using Domain.Organizations.ValueObjects;
 using Domain.Users.Errors;
+using MediatR;
 
 namespace Business.Organizations.CreateOrganization
 {
-    public sealed class CreateOrganizationCommandHandler
+    public sealed class CreateOrganizationCommandHandler 
+        : IRequestHandler<CreateOrganizationCommand, Result<CreateOrganizationResponse>>
     {
         private readonly IOrganizationRepository organizationRepository;
         private readonly IUnitOfWork unitOfWork;

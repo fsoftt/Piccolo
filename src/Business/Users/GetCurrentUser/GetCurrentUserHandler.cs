@@ -2,7 +2,7 @@
 using Domain.Common;
 using MediatR;
 
-namespace Business.Users.Queries.GetCurrentUser
+namespace Business.Users.GetCurrentUser
 {
     public sealed class GetCurrentUserHandler
         : IRequestHandler<

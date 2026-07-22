@@ -6,7 +6,7 @@ using Domain.Users.Errors;
 using Domain.Users.ValueObjects;
 using MediatR;
 
-namespace Business.Users.Commands.LoginUser
+namespace Business.Users.LoginUser
 {
     public class LoginUserHandler
         : IRequestHandler<LoginUserCommand, Result<string>>

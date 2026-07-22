@@ -1,7 +1,7 @@
 ﻿using Domain.Common;
 using MediatR;
 
-namespace Business.Users.Commands.LoginUser
+namespace Business.Users.LoginUser
 {
     public record LoginUserCommand(
         string Email, 

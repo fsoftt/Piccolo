@@ -1,4 +1,4 @@
-﻿namespace Business.Users.Queries.GetCurrentUser
+﻿namespace Business.Users.GetCurrentUser
 {
     public sealed record GetCurrentUserResponse(
         Guid UserId,

@@ -1,9 +1,9 @@
 ﻿using API.Extensions;
 using Domain.Common;
-using Business.Users.Queries.GetCurrentUser;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Business.Users.GetCurrentUser;
 
 namespace API.Controllers
 {

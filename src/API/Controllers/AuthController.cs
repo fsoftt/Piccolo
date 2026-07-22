@@ -1,8 +1,8 @@
 ﻿using API.Contracts.Authentication;
 using API.Extensions;
 using Domain.Common;
-using Business.Users.Commands.LoginUser;
-using Business.Users.Commands.RegisterUser;
+using Business.Users.LoginUser;
+using Business.Users.RegisterUser;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

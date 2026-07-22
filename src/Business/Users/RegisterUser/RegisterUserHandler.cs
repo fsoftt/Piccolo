@@ -7,7 +7,7 @@ using Domain.Users.Errors;
 using Domain.Users.ValueObjects;
 using MediatR;
 
-namespace Business.Users.Commands.RegisterUser
+namespace Business.Users.RegisterUser
 {
     public class RegisterUserHandler : IRequestHandler<RegisterUserCommand, Result<Guid>>
     {
