@@ -28,5 +28,10 @@ namespace Domain.Organizations.Errors
             new(
                 "Organization.AtLeastOneInstrumentRequired",
                 "An organization must have at least one instrument.");
+
+        public static readonly Error ErrorAdding =
+            new(
+                "Organization.ErrorAdding",
+                "Error adding the item to the organization.");
     }
 }
