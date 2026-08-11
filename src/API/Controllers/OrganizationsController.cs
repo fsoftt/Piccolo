@@ -2,6 +2,7 @@
 using API.Extensions;
 using Business.Organizations.ConfigureInstruments;
 using Business.Organizations.CreateOrganization;
+using Business.Organizations.GetInstruments;
 using Business.Organizations.GetMyOrganizations;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,28 @@ namespace API.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpGet("{organizationId:guid}/instruments")]
+        public async Task<IResult> GetInstruments(
+            Guid organizationId,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetOrganizationInstrumentsQuery(
+                organizationId);
+
+            var result = await sender.Send(query, cancellationToken);
+
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.Ok(result.Value);
         }
     }
 }
