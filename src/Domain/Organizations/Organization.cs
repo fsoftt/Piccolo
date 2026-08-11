@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Instruments;
 using Domain.Organizations.Errors;
 using Domain.Organizations.ValueObjects;
 
@@ -137,6 +138,36 @@ namespace Domain.Organizations
                     x => x.Name.Trim(),
                     StringComparer.OrdinalIgnoreCase)
                 .Any(x => x.Count() > 1);
+        }
+
+        public Result<OrganizationInstrument> AddInstrument(
+            string name,
+            InstrumentFamily family,
+            Guid? instrumentDefinitionId)
+        {
+            name = name.Trim();
+
+            var alreadyExists = instruments.Any(x =>
+                string.Equals(
+                    x.Name,
+                    name,
+                    StringComparison.OrdinalIgnoreCase));
+            if (alreadyExists)
+            {
+                return Result<OrganizationInstrument>.Failure(
+                    OrganizationErrors.DuplicateInstrumentName);
+            }
+
+            var instrument = new OrganizationInstrument(
+                Guid.NewGuid(),
+                Id,
+                name,
+                family,
+                instrumentDefinitionId);
+
+            instruments.Add(instrument);
+
+            return Result<OrganizationInstrument>.Success(instrument);
         }
     }
 }
