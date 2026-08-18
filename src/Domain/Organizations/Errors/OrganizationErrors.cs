@@ -33,5 +33,10 @@ namespace Domain.Organizations.Errors
             new(
                 "Organization.ErrorAdding",
                 "Error adding the item to the organization.");
+
+        public static readonly Error InstrumentNotFound =
+            new(
+                "Organization.InstrumentNotFound",
+                "The instrument was not found.");
     }
 }

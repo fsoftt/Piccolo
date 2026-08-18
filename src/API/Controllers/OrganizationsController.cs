@@ -5,6 +5,7 @@ using Business.Organizations.ConfigureInstruments;
 using Business.Organizations.CreateOrganization;
 using Business.Organizations.GetInstruments;
 using Business.Organizations.GetMyOrganizations;
+using Business.Organizations.RemoveInstrument;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -133,6 +134,29 @@ namespace API.Controllers
             return Results.Created(
                 $"/api/organizations/{organizationId}/instruments/{result.Value}",
                 result.Value);
+        }
+
+        [HttpDelete("{organizationId:guid}/instruments/{instrumentId:guid}")]
+        public async Task<IResult> RemoveInstrument(
+            Guid organizationId,
+            Guid instrumentId,
+            CancellationToken cancellationToken)
+        {
+            var command = new RemoveOrganizationInstrumentCommand(
+                organizationId,
+                instrumentId);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.NoContent();
         }
     }
 }

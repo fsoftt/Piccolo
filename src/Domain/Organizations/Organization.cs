@@ -169,5 +169,21 @@ namespace Domain.Organizations
 
             return Result<OrganizationInstrument>.Success(instrument);
         }
+
+        public Result RemoveInstrument(Guid instrumentId)
+        {
+            var instrument = instruments.FirstOrDefault(
+                x => x.Id == instrumentId);
+
+            if (instrument is null)
+            {
+                return Result.Failure(
+                    OrganizationErrors.InstrumentNotFound);
+            }
+
+            instruments.Remove(instrument);
+
+            return Result.Success();
+        }
     }
 }
