@@ -1,5 +1,6 @@
 ﻿using API.Contracts.Organizations;
-using API.Contracts.Organizations.Members.AddMember;
+using API.Contracts.Organizations.Instruments;
+using API.Contracts.Organizations.Members;
 using API.Extensions;
 using Business.Organizations.CreateOrganization;
 using Business.Organizations.GetMyOrganizations;

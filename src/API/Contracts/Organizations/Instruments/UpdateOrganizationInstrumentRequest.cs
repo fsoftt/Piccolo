@@ -1,6 +1,6 @@
 ﻿using Domain.Instruments;
 
-namespace API.Contracts.Organizations
+namespace API.Contracts.Organizations.Instruments
 {
     public sealed record UpdateOrganizationInstrumentRequest(
         string Name,
