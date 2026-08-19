@@ -10,6 +10,7 @@ namespace Business.Organizations.Specifications
         {
             Query
                 .Where(x => x.Id == organizationId)
+                .Include(x => x.Members)
                 .Include(x => x.Instruments);
         }
     }

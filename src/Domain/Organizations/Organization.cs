@@ -39,7 +39,7 @@ namespace Domain.Organizations
         {
             Organization organization = new Organization(Guid.NewGuid(), name);
 
-            Result ownerResult = organization.AddOwner(ownerUserId);
+            Result<OrganizationMember> ownerResult = organization.AddOwner(ownerUserId);
             if (ownerResult.IsFailure)
             {
                 return Result<Organization>.Failure(ownerResult.Error);
@@ -48,11 +48,11 @@ namespace Domain.Organizations
             return Result<Organization>.Success(organization);
         }
 
-        private Result AddOwner(Guid userId)
+        private Result<OrganizationMember> AddOwner(Guid userId)
         {
             if (members.Any(x => x.Role == OrganizationRole.Owner))
             {
-                return Result.Failure(
+                return Result<OrganizationMember>.Failure(
                     OrganizationErrors.OwnerAlreadyExists);
             }
 
@@ -62,14 +62,14 @@ namespace Domain.Organizations
 
             members.Add(owner);
 
-            return Result.Success();
+            return Result<OrganizationMember>.Success(owner);
         }
 
-        public Result AddMember(Guid userId)
+        public Result<OrganizationMember> AddMember(Guid userId)
         {
             if (members.Any(x => x.UserId == userId))
             {
-                return Result.Failure(
+                return Result<OrganizationMember>.Failure(
                     OrganizationErrors.DuplicateMember);
             }
 
@@ -79,7 +79,7 @@ namespace Domain.Organizations
 
             members.Add(member);
 
-            return Result.Success();
+            return Result<OrganizationMember>.Success(member);
         }
 
         public Result ConfigureInstruments(

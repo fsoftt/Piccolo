@@ -13,7 +13,6 @@ namespace Domain.Organizations
             Guid userId,
             OrganizationRole role)
         {
-            Id = Guid.NewGuid();
             OrganizationId = organizationId;
             UserId = userId;
             Role = role;

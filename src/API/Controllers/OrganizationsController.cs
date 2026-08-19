@@ -1,12 +1,14 @@
 ﻿using API.Contracts.Organizations;
+using API.Contracts.Organizations.Members.AddMember;
 using API.Extensions;
-using Business.Organizations.AddInstrument;
-using Business.Organizations.ConfigureInstruments;
 using Business.Organizations.CreateOrganization;
-using Business.Organizations.GetInstruments;
 using Business.Organizations.GetMyOrganizations;
-using Business.Organizations.RemoveInstrument;
-using Business.Organizations.UpdateInstrument;
+using Business.Organizations.Instruments.AddInstrument;
+using Business.Organizations.Instruments.ConfigureInstruments;
+using Business.Organizations.Instruments.GetInstruments;
+using Business.Organizations.Instruments.RemoveInstrument;
+using Business.Organizations.Instruments.UpdateInstrument;
+using Business.Organizations.Members.AddMember;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -185,6 +187,33 @@ namespace API.Controllers
             }
 
             return Results.NoContent();
+        }
+
+        [HttpPost("{organizationId:guid}/members")]
+        public async Task<IResult> AddMember(
+            Guid organizationId,
+            AddMemberRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new AddMemberCommand(
+                organizationId,
+                request.UserId);
+
+            var result = await sender.Send(
+                command,
+                cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.Created(
+               $"/api/organizations/{organizationId}/members/{result.Value!.UserId}",
+               result.Value);
         }
     }
 }
