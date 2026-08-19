@@ -1,7 +1,7 @@
 ﻿using Domain.Common;
 using MediatR;
 
-namespace Business.Organizations.ConfigureInstruments
+namespace Business.Organizations.Instruments.ConfigureInstruments
 {
     public sealed record ConfigureOrganizationInstrumentsCommand(
         Guid OrganizationId,

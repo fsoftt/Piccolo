@@ -1,6 +1,6 @@
 ﻿using Domain.Instruments;
 
-namespace Business.Organizations.ConfigureInstruments
+namespace Business.Organizations.Instruments.ConfigureInstruments
 {
     public sealed record OrganizationInstrumentRequest(
         Guid? InstrumentDefinitionId,

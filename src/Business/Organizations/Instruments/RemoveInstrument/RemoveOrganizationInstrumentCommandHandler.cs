@@ -4,15 +4,15 @@ using Domain.Organizations;
 using Domain.Organizations.Errors;
 using MediatR;
 
-namespace Business.Organizations.AddInstrument
+namespace Business.Organizations.Instruments.RemoveInstrument
 {
-    public sealed class AddOrganizationInstrumentCommandHandler
-        : IRequestHandler<AddOrganizationInstrumentCommand, Result<Guid>>
+    public sealed class RemoveOrganizationInstrumentCommandHandler
+        : IRequestHandler<RemoveOrganizationInstrumentCommand, Result>
     {
         private readonly IOrganizationRepository organizationRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public AddOrganizationInstrumentCommandHandler(
+        public RemoveOrganizationInstrumentCommandHandler(
             IOrganizationRepository organizationRepository,
             IUnitOfWork unitOfWork)
         {
@@ -20,12 +20,12 @@ namespace Business.Organizations.AddInstrument
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Guid>> Handle(
-            AddOrganizationInstrumentCommand request,
+        public async Task<Result> Handle(
+            RemoveOrganizationInstrumentCommand request,
             CancellationToken cancellationToken)
         {
             var specification =
-                new OrganizationForAddingInstrumentSpecification(
+                new OrganizationForRemovingInstrumentSpecification(
                     request.OrganizationId);
 
             var organization = await organizationRepository.FirstOrDefaultAsync(
@@ -33,22 +33,19 @@ namespace Business.Organizations.AddInstrument
                 cancellationToken);
             if (organization is null)
             {
-                return Result<Guid>.Failure(
-                    OrganizationErrors.NotFound);
+                return Result.Failure(OrganizationErrors.NotFound);
             }
 
-            var result = organization.AddInstrument(
-                request.Name,
-                request.Family,
-                request.InstrumentDefinitionId);
+            var result = organization.RemoveInstrument(
+                request.InstrumentId);
             if (result.IsFailure)
             {
-                return Result<Guid>.Failure(result.Error);
+                return result;
             }
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 
-            return Result< Guid>.Success(result.Value!.Id);
+            return Result.Success();
         }
     }
 }

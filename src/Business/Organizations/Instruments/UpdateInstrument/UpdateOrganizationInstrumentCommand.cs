@@ -2,7 +2,7 @@
 using Domain.Instruments;
 using MediatR;
 
-namespace Business.Organizations.UpdateInstrument
+namespace Business.Organizations.Instruments.UpdateInstrument
 {
     public sealed record UpdateOrganizationInstrumentCommand(
         Guid OrganizationId,

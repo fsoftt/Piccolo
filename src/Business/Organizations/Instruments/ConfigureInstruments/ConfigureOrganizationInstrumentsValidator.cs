@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Business.Organizations.ConfigureInstruments
+namespace Business.Organizations.Instruments.ConfigureInstruments
 {
     public sealed class ConfigureOrganizationInstrumentsValidator
     : AbstractValidator<ConfigureOrganizationInstrumentsCommand>

@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using Domain.Organizations;
 
-namespace Business.Organizations.GetInstruments
+namespace Business.Organizations.Instruments.GetInstruments
 {
     public sealed class OrganizationInstrumentsSpecification
         : Specification<Organization>

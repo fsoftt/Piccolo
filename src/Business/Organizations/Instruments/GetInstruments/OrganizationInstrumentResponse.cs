@@ -1,6 +1,6 @@
 ﻿using Domain.Instruments;
 
-namespace Business.Organizations.GetInstruments
+namespace Business.Organizations.Instruments.GetInstruments
 {
     public sealed record OrganizationInstrumentResponse(
         Guid Id,

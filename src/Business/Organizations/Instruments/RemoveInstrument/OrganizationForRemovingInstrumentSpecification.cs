@@ -1,7 +1,7 @@
 ﻿using Ardalis.Specification;
 using Domain.Organizations;
 
-namespace Business.Organizations.RemoveInstrument
+namespace Business.Organizations.Instruments.RemoveInstrument
 {
     public sealed class OrganizationForRemovingInstrumentSpecification
         : Specification<Organization>

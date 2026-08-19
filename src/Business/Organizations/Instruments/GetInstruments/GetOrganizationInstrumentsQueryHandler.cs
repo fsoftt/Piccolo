@@ -1,9 +1,10 @@
-﻿using Domain.Common;
+﻿using Business.Organizations.Instruments.GetInstruments;
+using Domain.Common;
 using Domain.Organizations;
 using Domain.Organizations.Errors;
 using MediatR;
 
-namespace Business.Organizations.GetInstruments
+namespace Business.Organizations.Instruments.GetInstruments
 {
     public sealed class GetOrganizationInstrumentsQueryHandler
         : IRequestHandler<

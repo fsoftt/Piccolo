@@ -1,7 +1,7 @@
 ﻿using Domain.Common;
 using MediatR;
 
-namespace Business.Organizations.RemoveInstrument
+namespace Business.Organizations.Instruments.RemoveInstrument
 {
     public sealed record RemoveOrganizationInstrumentCommand(
         Guid OrganizationId,

@@ -1,18 +1,19 @@
 ﻿using Business.Abstractions.Persistence;
+using Business.Organizations.Specifications;
 using Domain.Common;
 using Domain.Organizations;
 using Domain.Organizations.Errors;
 using MediatR;
 
-namespace Business.Organizations.UpdateInstrument
+namespace Business.Organizations.Instruments.ConfigureInstruments
 {
-    public sealed class UpdateOrganizationInstrumentCommandHandler
-        : IRequestHandler<UpdateOrganizationInstrumentCommand, Result>
+    public sealed class ConfigureOrganizationInstrumentsCommandHandler
+        : IRequestHandler<ConfigureOrganizationInstrumentsCommand, Result>
     {
         private readonly IOrganizationRepository organizationRepository;
         private readonly IUnitOfWork unitOfWork;
 
-        public UpdateOrganizationInstrumentCommandHandler(
+        public ConfigureOrganizationInstrumentsCommandHandler(
             IOrganizationRepository organizationRepository,
             IUnitOfWork unitOfWork)
         {
@@ -21,27 +22,28 @@ namespace Business.Organizations.UpdateInstrument
         }
 
         public async Task<Result> Handle(
-            UpdateOrganizationInstrumentCommand request,
+            ConfigureOrganizationInstrumentsCommand request,
             CancellationToken cancellationToken)
         {
-            var specification =
-                new OrganizationForUpdatingInstrumentSpecification(
-                    request.OrganizationId);
+            var specification = new OrganizationByIdSpecification(
+                request.OrganizationId);
 
             var organization = await organizationRepository.FirstOrDefaultAsync(
                 specification,
                 cancellationToken);
             if (organization is null)
             {
-                return Result.Failure(
-                    OrganizationErrors.NotFound);
+                return Result.Failure(OrganizationErrors.NotFound);
             }
 
-            var result = organization.UpdateInstrument(
-                request.InstrumentId,
-                request.Name,
-                request.Family,
-                request.InstrumentDefinitionId);
+            var instruments = request.Instruments
+                .Select(x => new OrganizationInstrumentInfo(
+                    x.Name,
+                    x.Family,
+                    x.InstrumentDefinitionId))
+                .ToList();
+
+            var result = organization.ConfigureInstruments(instruments);
             if (result.IsFailure)
             {
                 return result;

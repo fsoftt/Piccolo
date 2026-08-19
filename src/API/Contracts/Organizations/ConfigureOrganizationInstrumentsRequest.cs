@@ -1,4 +1,4 @@
-﻿using Business.Organizations.ConfigureInstruments;
+﻿using Business.Organizations.Instruments.ConfigureInstruments;
 
 namespace API.Contracts.Organizations
 {

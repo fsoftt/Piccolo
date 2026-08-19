@@ -1,12 +1,12 @@
 ﻿using Ardalis.Specification;
 using Domain.Organizations;
 
-namespace Business.Organizations.AddInstrument
+namespace Business.Organizations.Instruments.UpdateInstrument
 {
-    public sealed class OrganizationForAddingInstrumentSpecification
+    public sealed class OrganizationForUpdatingInstrumentSpecification
         : Specification<Organization>
     {
-        public OrganizationForAddingInstrumentSpecification(
+        public OrganizationForUpdatingInstrumentSpecification(
             Guid organizationId)
         {
             Query
