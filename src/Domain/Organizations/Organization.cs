@@ -185,5 +185,41 @@ namespace Domain.Organizations
 
             return Result.Success();
         }
+
+        public Result UpdateInstrument(
+            Guid instrumentId,
+            string name,
+            InstrumentFamily family,
+            Guid? instrumentDefinitionId)
+        {
+            name = name.Trim();
+
+            var instrument = instruments.FirstOrDefault(
+                x => x.Id == instrumentId);
+            if (instrument is null)
+            {
+                return Result.Failure(
+                    OrganizationErrors.InstrumentNotFound);
+            }
+
+            var duplicateName = instruments.Any(x =>
+                x.Id != instrumentId &&
+                string.Equals(
+                    x.Name,
+                    name,
+                    StringComparison.OrdinalIgnoreCase));
+            if (duplicateName)
+            {
+                return Result.Failure(
+                    OrganizationErrors.DuplicateInstrumentName);
+            }
+
+            instrument.Update(
+                name,
+                family,
+                instrumentDefinitionId);
+
+            return Result.Success();
+        }
     }
 }

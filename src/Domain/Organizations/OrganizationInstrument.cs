@@ -34,5 +34,15 @@ namespace Domain.Organizations
         {
             Name = name;
         }
+
+        internal void Update(
+            string name,
+            InstrumentFamily family,
+            Guid? instrumentDefinitionId)
+        {
+            Name = name;
+            Family = family;
+            InstrumentDefinitionId = instrumentDefinitionId;
+        }
     }
 }

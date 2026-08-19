@@ -6,6 +6,7 @@ using Business.Organizations.CreateOrganization;
 using Business.Organizations.GetInstruments;
 using Business.Organizations.GetMyOrganizations;
 using Business.Organizations.RemoveInstrument;
+using Business.Organizations.UpdateInstrument;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -145,6 +146,33 @@ namespace API.Controllers
             var command = new RemoveOrganizationInstrumentCommand(
                 organizationId,
                 instrumentId);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.NoContent();
+        }
+
+        [HttpPut("{organizationId:guid}/instruments/{instrumentId:guid}")]
+        public async Task<IResult> UpdateInstrument(
+            Guid organizationId,
+            Guid instrumentId,
+            UpdateOrganizationInstrumentRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateOrganizationInstrumentCommand(
+                organizationId,
+                instrumentId,
+                request.Name,
+                request.Family,
+                request.InstrumentDefinitionId);
 
             var result = await sender.Send(command, cancellationToken);
             if (result.IsFailure)
