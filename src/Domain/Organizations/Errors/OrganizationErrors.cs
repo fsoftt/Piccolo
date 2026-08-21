@@ -38,5 +38,15 @@ namespace Domain.Organizations.Errors
             new(
                 "Organization.InstrumentNotFound",
                 "The instrument was not found.");
+
+        public static readonly Error MemberNotFound =
+            new(
+                "Organization.MemberNotFound",
+                "The organization member was not found.");
+
+        public static readonly Error CannotDeactivateOwner =
+            new(
+                "Organization.CannotDeactivateOwner",
+                "An owner cannot be deactivated.");
     }
 }

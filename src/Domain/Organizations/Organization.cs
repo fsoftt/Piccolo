@@ -130,6 +130,29 @@ namespace Domain.Organizations
             return Result.Success();
         }
 
+        public Result UpdateMemberStatus(Guid userId, MemberStatus status)
+        {
+            var member = members.FirstOrDefault(x => x.UserId == userId);
+            if (member is null)
+            {
+                return Result.Failure(OrganizationErrors.MemberNotFound);
+            }
+
+            if (member.Role == OrganizationRole.Owner && status != MemberStatus.Active)
+            {
+                return Result.Failure(OrganizationErrors.CannotDeactivateOwner);
+            }
+
+            if (member.Status == status)
+            {
+                return Result.Success();
+            }
+
+            member.SetStatus(status);
+
+            return Result.Success();
+        }
+
         private static bool HasDuplicateNames(
             IEnumerable<OrganizationInstrumentInfo> instruments)
         {

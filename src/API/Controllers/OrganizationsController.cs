@@ -238,5 +238,30 @@ namespace API.Controllers
 
             return Results.Ok(result.Value);
         }
+
+        [HttpPatch("{organizationId:guid}/members/{userId:guid}")]
+        public async Task<IResult> UpdateMember(
+            Guid organizationId,
+            Guid userId,
+            UpdateMemberRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new Business.Organizations.Members.UpdateMember.UpdateOrganizationMemberCommand(
+                organizationId,
+                userId,
+                request.Status);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.NoContent();
+        }
     }
 }

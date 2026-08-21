@@ -30,6 +30,11 @@ namespace Domain.Organizations
 
         public DateTime JoinedAt { get; private set; }
 
+        internal void SetStatus(MemberStatus status)
+        {
+            Status = status;
+        }
+
         internal static OrganizationMember CreateOwner(
             Guid organizationId,
             Guid userId)
