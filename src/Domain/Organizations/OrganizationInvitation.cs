@@ -39,6 +39,16 @@ namespace Domain.Organizations
 
         public DateTime ExpiresAt { get; private set; }
 
+        public void Accept()
+        {
+            if (Status != InvitationStatus.Pending)
+            {
+                return;
+            }
+
+            Status = InvitationStatus.Accepted;
+        }
+
         public static OrganizationInvitation Create(
             Guid organizationId,
             Email email,
