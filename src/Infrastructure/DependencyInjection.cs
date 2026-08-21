@@ -1,10 +1,13 @@
 ﻿using Business.Abstractions.Persistence;
 using Business.Authentication;
+using Business.Messaging;
 using CrossCutting.Exceptions;
 using Domain.Instruments;
 using Domain.Organizations;
 using Domain.Users;
 using Infrastructure.Authentication;
+using Infrastructure.Messaging;
+using Infrastructure.Outbox;
 using Infrastructure.Persistence;
 using Infrastructure.Persistence.Instruments;
 using Infrastructure.Persistence.Organizations;
@@ -38,6 +41,10 @@ public static class DependencyInjection
         services.AddScoped<IInvitationTokenGenerator, InvitationTokenGenerator>();
         services.AddScoped<IOrganizationInvitationRepository, OrganizationInvitationRepository>();
         services.AddScoped<IOutboxRepository, OutboxRepository>();
+        services.AddScoped<IEmailSender, EmailSender>();
+        services.AddScoped<InvitationCreatedHandler>();
+        services.AddHostedService<OutboxProcessor>();
+        services.AddScoped<IOutboxDispatcher, OutboxDispatcher>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IInstrumentDefinitionRepository, InstrumentDefinitionRepository>();

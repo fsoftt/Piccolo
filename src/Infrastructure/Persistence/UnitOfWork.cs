@@ -31,7 +31,7 @@ namespace Infrastructure.Persistence
             {
                 foreach (var evt in aggregate.DomainEvents)
                 {
-                    var type = evt.GetType().AssemblyQualifiedName!;
+                    var type = evt.GetType().FullName!;
                     var data = System.Text.Json.JsonSerializer.Serialize(evt, evt.GetType());
                     await outboxRepository.AddAsync(type, data, cancellationToken);
                 }
