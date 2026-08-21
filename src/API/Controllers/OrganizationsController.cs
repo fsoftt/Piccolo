@@ -11,6 +11,7 @@ using Business.Organizations.Instruments.RemoveInstrument;
 using Business.Organizations.Instruments.UpdateInstrument;
 using Business.Organizations.Members.AddMember;
 using Business.Organizations.Members.GetMembers;
+using Business.Organizations.Members.RemoveMember;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -90,6 +91,29 @@ namespace API.Controllers
             }
 
             return NoContent();
+        }
+
+        [HttpDelete("{organizationId:guid}/members/{userId:guid}")]
+        public async Task<IResult> RemoveMember(
+            Guid organizationId,
+            Guid userId,
+            CancellationToken cancellationToken)
+        {
+            var command = new RemoveOrganizationMemberCommand(
+                organizationId,
+                userId);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.NoContent();
         }
 
         [HttpGet("{organizationId:guid}/instruments")]

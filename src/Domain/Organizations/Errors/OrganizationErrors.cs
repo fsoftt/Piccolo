@@ -48,5 +48,10 @@ namespace Domain.Organizations.Errors
             new(
                 "Organization.CannotDeactivateOwner",
                 "An owner cannot be deactivated.");
+
+        public static readonly Error CannotRemoveOwner =
+            new(
+                "Organization.CannotRemoveOwner",
+                "An owner cannot be removed from the organization.");
     }
 }
