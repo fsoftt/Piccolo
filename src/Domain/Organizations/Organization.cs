@@ -14,6 +14,29 @@ namespace Domain.Organizations
         {
         }
 
+        public Result UpdateMemberRole(Guid userId, OrganizationRole role)
+        {
+            var member = members.FirstOrDefault(x => x.UserId == userId);
+            if (member is null)
+            {
+                return Result.Failure(OrganizationErrors.MemberNotFound);
+            }
+
+            if (member.Role == role)
+            {
+                return Result.Success();
+            }
+
+            if (role == OrganizationRole.Owner && members.Any(x => x.Role == OrganizationRole.Owner && x.UserId != userId))
+            {
+                return Result.Failure(OrganizationErrors.OwnerAlreadyExists);
+            }
+
+            member.SetRole(role);
+
+            return Result.Success();
+        }
+
         private Organization(
             Guid id,
             OrganizationName name)

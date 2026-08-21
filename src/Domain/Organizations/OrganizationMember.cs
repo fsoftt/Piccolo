@@ -56,5 +56,10 @@ namespace Domain.Organizations
                 userId,
                 OrganizationRole.Member);
         }
+
+        internal void SetRole(OrganizationRole role)
+        {
+            Role = role;
+        }
     }
 }

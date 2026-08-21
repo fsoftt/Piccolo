@@ -239,7 +239,7 @@ namespace API.Controllers
             return Results.Ok(result.Value);
         }
 
-        [HttpPatch("{organizationId:guid}/members/{userId:guid}")]
+        [HttpPatch("{organizationId:guid}/members/{userId:guid}/status")]
         public async Task<IResult> UpdateMember(
             Guid organizationId,
             Guid userId,
@@ -250,6 +250,31 @@ namespace API.Controllers
                 organizationId,
                 userId,
                 request.Status);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.NoContent();
+        }
+
+        [HttpPatch("{organizationId:guid}/members/{userId:guid}/role")]
+        public async Task<IResult> UpdateMemberRole(
+            Guid organizationId,
+            Guid userId,
+            UpdateMemberRoleRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new Business.Organizations.Members.UpdateRole.UpdateOrganizationMemberRoleCommand(
+                organizationId,
+                userId,
+                request.Role);
 
             var result = await sender.Send(command, cancellationToken);
             if (result.IsFailure)
