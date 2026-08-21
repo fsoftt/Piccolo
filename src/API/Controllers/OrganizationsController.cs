@@ -1,5 +1,6 @@
 ﻿using API.Contracts.Organizations;
 using API.Contracts.Organizations.Instruments;
+using API.Contracts.Organizations.Invitations;
 using API.Contracts.Organizations.Members;
 using API.Extensions;
 using Business.Organizations.CreateOrganization;
@@ -9,6 +10,7 @@ using Business.Organizations.Instruments.ConfigureInstruments;
 using Business.Organizations.Instruments.GetInstruments;
 using Business.Organizations.Instruments.RemoveInstrument;
 using Business.Organizations.Instruments.UpdateInstrument;
+using Business.Organizations.Invitations.CreateInvitation;
 using Business.Organizations.Members.AddMember;
 using Business.Organizations.Members.GetMembers;
 using Business.Organizations.Members.RemoveMember;
@@ -311,6 +313,29 @@ namespace API.Controllers
             }
 
             return Results.NoContent();
+        }
+
+        [HttpPost("{organizationId:guid}/invitations")]
+        public async Task<IResult> CreateInvitation(
+            Guid organizationId,
+            CreateInvitationRequest request,
+            CancellationToken cancellationToken)
+        {
+            var command = new CreateOrganizationInvitationCommand(
+                organizationId,
+                request.Email);
+
+            var result = await sender.Send(command, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.Created($"/api/organizations/{organizationId}/invitations/{result.Value!.Id}", result.Value);
         }
     }
 }

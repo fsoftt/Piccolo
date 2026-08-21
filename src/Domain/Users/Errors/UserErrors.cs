@@ -16,5 +16,10 @@ namespace Domain.Users.Errors
             new Error(
                 "Users.InvalidPasswordHash",
                 "Invalid password hash");
+
+        public static readonly Error EmailNotFound =
+            new Error(
+                "Users.EmailNotFound",
+                "User with provided email was not found. Please create the user first.");
     }
 }

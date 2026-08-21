@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="Common\Errors\" />
     <Folder Include="Folder\" />
+    <Folder Include="Outbox\" />
     <Folder Include="Score\" />
   </ItemGroup>
 

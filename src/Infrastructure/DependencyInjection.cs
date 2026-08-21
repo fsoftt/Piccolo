@@ -35,6 +35,9 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IInvitationTokenGenerator, InvitationTokenGenerator>();
+        services.AddScoped<IOrganizationInvitationRepository, OrganizationInvitationRepository>();
+        services.AddScoped<IOutboxRepository, OutboxRepository>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
         services.AddScoped<IOrganizationRepository, OrganizationRepository>();
         services.AddScoped<IInstrumentDefinitionRepository, InstrumentDefinitionRepository>();
