@@ -10,6 +10,7 @@ using Business.Organizations.Instruments.GetInstruments;
 using Business.Organizations.Instruments.RemoveInstrument;
 using Business.Organizations.Instruments.UpdateInstrument;
 using Business.Organizations.Members.AddMember;
+using Business.Organizations.Members.GetMembers;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -215,6 +216,27 @@ namespace API.Controllers
             return Results.Created(
                $"/api/organizations/{organizationId}/members/{result.Value!.UserId}",
                result.Value);
+        }
+
+        [HttpGet("{organizationId:guid}/members")]
+        public async Task<IResult> GetMembers(
+            Guid organizationId,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetOrganizationMembersQuery(
+                organizationId);
+
+            var result = await sender.Send(query, cancellationToken);
+            if (result.IsFailure)
+            {
+                return Results.BadRequest(new
+                {
+                    result.Error.Code,
+                    Message = result.Error.Description
+                });
+            }
+
+            return Results.Ok(result.Value);
         }
     }
 }
